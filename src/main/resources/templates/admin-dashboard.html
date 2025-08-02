@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard - Redlife</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <nav style="width:100%;background:#ffeaea;padding:12px 0 10px 0;box-shadow:0 2px 8px #e74c3c11;margin-bottom:10px;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;">
+            <a th:href="@{/}" style="color:#c0392b;font-weight:700;font-size:1.13em;text-decoration:none;padding:8px 22px;border-radius:8px;transition:background 0.2s;">&larr; Back to Home</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <h2 class="dashboard-header">Admin Dashboard</h2>
+        </div>
+        <!-- Button Group for Tabs -->
+        <div id="admin-dashboard-tabs" style="display:flex;gap:10px;margin-bottom:20px;">
+            <button type="button" class="tab-btn" onclick="showTab('donors')">All Donors</button>
+            <button type="button" class="tab-btn" onclick="showTab('receivers')">All Receivers</button>
+            <button type="button" class="tab-btn" onclick="showTab('donation')">All Donation Posts</button>
+            <button type="button" class="tab-btn" onclick="showTab('need')">All Need Blood Posts</button>
+        </div>
+        <script>
+            function showTab(tab) {
+                const tabs = ['donors','receivers','donation','need'];
+                tabs.forEach(function(t) {
+                    document.getElementById('tab-'+t).style.display = (t===tab)?'block':'none';
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab'));
+                document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active-tab');
+            }
+            window.onload = function() {
+                showTab('donors'); // Default tab
+            };
+        </script>
+        <style>
+            .tab-btn { padding:8px 18px; border:none; background:#ffeaea; color:#c0392b; border-radius:6px; font-weight:600; cursor:pointer; transition:background 0.2s; }
+            .tab-btn.active-tab, .tab-btn:hover { background:#c0392b; color:#fff; }
+            .table-card { background:#fff; border-radius:18px; box-shadow:0 8px 32px #e74c3c22; padding:24px 18px; max-width:1100px; margin:24px auto; }
+            .table-title { color:#c0392b; font-size:1.15em; font-weight:700; margin-bottom:10px; text-align:left; letter-spacing:0.5px; }
+            table { width:100%; border-collapse:collapse; background:transparent; }
+            th, td { padding:12px 10px; border-bottom:1px solid #f3d1d1; text-align:left; }
+            th { background:#ffeaea; color:#c0392b; font-size:1.08em; font-weight:700; }
+            tr:last-child td { border-bottom:none; }
+            tr:nth-child(even) { background:#faf6f6; }
+            tr:hover { background:#fff2f2; }
+            @media (max-width:900px) { .table-card { padding:10px 2vw; } th, td { padding:8px 4px; font-size:0.98em; } }
+            .logout-btn {
+                background: #c0392b;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 32px;
+                font-size: 1.12em;
+                font-weight: 600;
+                text-decoration: none;
+                transition: background 0.2s;
+                margin: 0 auto;
+                display: inline-block;
+            }
+            .logout-btn:hover { background: #e74c3c; color: #fff; }
+        </style>
+        <!-- Tab Contents -->
+        <div id="tab-donors">
+            <div class="table-card">
+                <div class="table-title">All Donors</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Blood Group</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="donor : ${donors}">
+                            <td data-label="Name" th:text="${donor.name}"></td>
+                            <td data-label="Email" th:text="${donor.email}"></td>
+                            <td data-label="Phone" th:text="${donor.phoneNumber}"></td>
+                            <td data-label="Division" th:text="${donor.division}"></td>
+                            <td data-label="District" th:text="${donor.district}"></td>
+                            <td data-label="Blood Group" th:text="${donor.bloodGroup}"></td>
+                            <td data-label="Action">
+                                <form th:action="@{/admin/delete-user}" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" th:value="${donor.id}"/>
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-receivers" style="display:none;">
+            <div class="table-card">
+                <div class="table-title">All Receivers</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Blood Group</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="receiver : ${receivers}">
+                            <td data-label="Name" th:text="${receiver.name}"></td>
+                            <td data-label="Email" th:text="${receiver.email}"></td>
+                            <td data-label="Phone" th:text="${receiver.phoneNumber}"></td>
+                            <td data-label="Division" th:text="${receiver.division}"></td>
+                            <td data-label="District" th:text="${receiver.district}"></td>
+                            <td data-label="Blood Group" th:text="${receiver.bloodGroup}"></td>
+                            <td data-label="Action">
+                                <form th:action="@{/admin/delete-user}" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" th:value="${receiver.id}"/>
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-donation" style="display:none;">
+            <div class="table-card">
+                <div class="table-title">All Donation Posts</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Donor Name</th>
+                            <th>Blood Group</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Area</th>
+                            <th>Note</th>
+                            <th>Phone</th>
+                            <th>Live Chat</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="post : ${posts}">
+                            <td data-label="Donor Name" th:text="${post.donor.name}"></td>
+                            <td data-label="Blood Group" th:text="${post.donor.bloodGroup}"></td>
+                            <td data-label="Division" th:text="${post.division}"></td>
+                            <td data-label="District" th:text="${post.district}"></td>
+                            <td data-label="Area" th:text="${post.area}"></td>
+                            <td data-label="Note" th:text="${post.note}"></td>
+                            <td data-label="Phone" th:text="${post.hidePhoneNumber} ? 'Hidden' : post.donor.phoneNumber"></td>
+                            <td data-label="Live Chat">
+                                <div th:if="${post.hidePhoneNumber}" style="background:#ffeaea; border-radius:8px; padding:6px 0;">Live Chat (coming soon)</div>
+                            </td>
+                            <td data-label="Created" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td data-label="Action">
+                                <form th:action="@{/admin/delete-donation-post}" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" th:value="${post.id}"/>
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-need" style="display:none;">
+            <div class="table-card">
+                <div class="table-title">All Need Blood Posts</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Receiver Name</th>
+                            <th>Blood Group</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Area</th>
+                            <th>Note</th>
+                            <th>Phone</th>
+                            <th>Live Chat</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="need : ${needBloodPosts}">
+                            <td data-label="Receiver Name" th:text="${need.receiver.name}"></td>
+                            <td data-label="Blood Group" th:text="${need.bloodGroup}"></td>
+                            <td data-label="Division" th:text="${need.division}"></td>
+                            <td data-label="District" th:text="${need.district}"></td>
+                            <td data-label="Area" th:text="${need.area}"></td>
+                            <td data-label="Note" th:text="${need.note}"></td>
+                            <td data-label="Phone" th:text="${need.hidePhoneNumber} ? 'Hidden' : need.receiver.phoneNumber"></td>
+                            <td data-label="Live Chat">
+                                <div th:if="${need.hidePhoneNumber}" style="background:#ffeaea; border-radius:8px; padding:6px 0;">Live Chat (coming soon)</div>
+                            </td>
+                            <td data-label="Created" th:text="${#temporals.format(need.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td data-label="Action">
+                                <form th:action="@{/admin/delete-need-blood-post}" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" th:value="${need.id}"/>
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div style="width:100%;display:flex;justify-content:center;margin:40px 0 0 0;">
+            <a th:href="@{/logout}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+</body>
+</html> 

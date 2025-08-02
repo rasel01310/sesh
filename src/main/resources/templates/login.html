@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${isAdmin} ? 'Admin Login - Redlife' : 'User Login - Redlife'"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body { background: linear-gradient(135deg, #f7f7fa 60%, #ffeaea 100%); }
+        .login-container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 18px; box-shadow: 0 8px 32px #e74c3c22; padding: 40px 32px; text-align: center; }
+        .login-container h2 { color: #c0392b; font-size: 2em; margin-bottom: 18px; font-weight: 800; }
+        form { display: flex; flex-direction: column; gap: 16px; margin-bottom: 18px; }
+        label { text-align: left; color: #c0392b; font-weight: 600; margin-bottom: 4px; }
+        input[type="text"], input[type="email"], input[type="password"] { padding: 10px; border-radius: 6px; border: 1.5px solid #f3d1d1; font-size: 1em; }
+        button { background: #c0392b; color: #fff; border: none; border-radius: 8px; padding: 12px 0; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #e74c3c; }
+        .error-message { color: #fff; background: #e74c3c; padding: 10px 0; border-radius: 8px; margin-bottom: 10px; font-weight: 600; }
+        a { color: #c0392b; text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 600px) { .login-container { padding: 18px 4vw; margin: 20px 2vw; } }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2 th:text="${isAdmin} ? 'Admin Login' : 'User Login'"></h2>
+        <form method="post" th:action="@{/login}">
+            <label th:text="${isAdmin} ? 'Username:' : 'Email:'"></label>
+            <input th:if="${isAdmin}" type="text" name="username" required/>
+            <input th:unless="${isAdmin}" type="email" name="username" required/>
+            <label>Password:</label>
+            <input type="password" name="password" required/>
+            <button type="submit">Login</button>
+        </form>
+        <div th:if="${param.error}" class="error-message">
+            Invalid credentials. Please try again.
+        </div>
+        <div th:if="${!isAdmin}">
+            <a th:href="@{/register}">Don't have an account? Register here</a><br/>
+        </div>
+        <a th:href="@{/}">Back to Home</a>
+    </div>
+</body>
+</html> 

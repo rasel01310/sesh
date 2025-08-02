@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Redlife - Smart Blood Donation System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body { background: linear-gradient(135deg, #f7f7fa 60%, #ffeaea 100%); }
+        .home-container { max-width: 480px; margin: 60px auto 32px auto; background: #fff; border-radius: 18px; box-shadow: 0 8px 32px #e74c3c22; padding: 48px 32px 36px 32px; text-align: center; }
+        .home-container h1 { color: #c0392b; font-size: 2.3em; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px; }
+        .home-container span { color: #e74c3c; }
+        .home-container p { color: #444; margin-bottom: 32px; font-size: 1.13em; }
+        .home-links { display: flex; flex-direction: column; gap: 20px; margin-top: 30px; }
+        .home-links .button { background: #c0392b; color: #fff; border: none; border-radius: 8px; padding: 16px 0; font-size: 1.13em; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+        .home-links .button:hover { background: #e74c3c; }
+        .team-section { max-width: 600px; margin: 60px auto 0 auto; background: #fff; border-radius: 18px; box-shadow: 0 8px 32px #e74c3c22; padding: 36px 24px 32px 24px; text-align: center; }
+        .team-title { color: #c0392b; font-size: 1.5em; font-weight: 800; margin-bottom: 18px; letter-spacing: 0.5px; }
+        .team-img {
+            width: 100%;
+            max-width: 340px;
+            height: auto;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px #e74c3c22;
+            margin-bottom: 12px;
+        }
+        .team-caption { color: #444; font-size: 1.08em; margin-top: 6px; }
+        @media (max-width: 700px) {
+            .home-container, .team-section { padding: 16px 4vw; margin: 20px 2vw; }
+            .team-img { max-width: 98vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <h1>Welcome to <span>Redlife</span></h1>
+        <p>Smart Blood Donation System for Bangladesh</p>
+        <div class="home-links">
+            <a th:href="@{/admin-login}" class="button">Admin Login</a>
+            <a th:href="@{/user-login}" class="button">User Login</a>
+            <a th:href="@{/register}" class="button">User Registration</a>
+        </div>
+    </div>
+    <div class="team-section">
+        <div class="team-title">It's Me 🤝 </div>
+        <img src="@{/img/mypic.jpg}" alt="Team" class="team-img">
+        <div class="team-caption">I am passionate about saving lives and making blood donation easy for everyone in Bangladesh.</div>
+    </div>
+</body>
+<!--
+Replace /static/img/team-placeholder.png with your actual group photo.
+--> 

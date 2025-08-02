@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Receiver Dashboard - Redlife</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+    <nav style="width:100%;background:#ffeaea;padding:12px 0 10px 0;box-shadow:0 2px 8px #e74c3c11;margin-bottom:10px;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;">
+            <a th:href="@{/}" style="color:#c0392b;font-weight:700;font-size:1.13em;text-decoration:none;padding:8px 22px;border-radius:8px;transition:background 0.2s;">&larr; Back to Home</a>
+        </div>
+    </nav>
+    <!-- Move logout button to bottom, centered -->
+    <div style="width:100%;display:flex;justify-content:center;margin:40px 0 0 0;">
+        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+    </div>
+    <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <h2 class="dashboard-header">Receiver Dashboard</h2>
+            <div class="welcome-user">Welcome, <span th:text="${user.name}"></span></div>
+        </div>
+        <!-- Button Group for Tabs -->
+        <div id="dashboard-tabs" style="display:flex;gap:10px;margin-bottom:20px;">
+            <button type="button" class="tab-btn" onclick="showTab('allNeed')">All Need Blood Posts</button>
+            <button type="button" class="tab-btn" onclick="showTab('allDonation')">All Donation Posts</button>
+            <button type="button" class="tab-btn" onclick="showTab('need')">Need Blood Posts</button>
+            <button type="button" class="tab-btn" onclick="showTab('create')">Create Need Blood Post</button>
+            <button type="button" class="tab-btn" onclick="showTab('my')">My Need Blood Posts</button>
+        </div>
+        <script>
+            function showTab(tab) {
+                const tabs = ['allNeed','allDonation','need','create','my'];
+                tabs.forEach(function(t) {
+                    document.getElementById('tab-'+t).style.display = (t===tab)?'block':'none';
+                });
+                // Highlight active button
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab'));
+                document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active-tab');
+            }
+            window.onload = function() {
+                showTab('allNeed'); // Default tab
+                if (typeof updateDistricts === 'function') updateDistricts();
+                if (typeof updateNeedDistricts === 'function') updateNeedDistricts();
+                if (typeof toggleNeedLiveChatDiv === 'function') toggleNeedLiveChatDiv();
+            };
+        </script>
+        <script>
+            const needDistrictsByDivision = {
+                'Dhaka': ['Dhaka', 'Faridpur', 'Gazipur', 'Gopalganj', 'Kishoreganj', 'Madaripur', 'Manikganj', 'Munshiganj', 'Narayanganj', 'Narsingdi', 'Rajbari', 'Shariatpur', 'Tangail'],
+                'Chattogram': ['Bandarban', 'Brahmanbaria', 'Chandpur', 'Chattogram', 'Cumilla', 'Cox’s Bazar', 'Feni', 'Khagrachari', 'Lakshmipur', 'Noakhali', 'Rangamati'],
+                'Khulna': ['Bagerhat', 'Chuadanga', 'Jashore', 'Jhenaidah', 'Khulna', 'Kushtia', 'Magura', 'Meherpur', 'Narail', 'Satkhira'],
+                'Barishal': ['Barguna', 'Barishal', 'Bhola', 'Jhalokathi', 'Patuakhali', 'Pirojpur'],
+                'Mymensingh': ['Jamalpur', 'Mymensingh', 'Netrokona', 'Sherpur'],
+                'Rajshahi': ['Bogura', 'Joypurhat', 'Naogaon', 'Natore', 'Chapainawabganj', 'Pabna', 'Rajshahi', 'Sirajganj'],
+                'Rangpur': ['Dinajpur', 'Gaibandha', 'Kurigram', 'Lalmonirhat', 'Nilphamari', 'Panchagarh', 'Rangpur', 'Thakurgaon'],
+                'Sylhet': ['Habiganj', 'Moulvibazar', 'Sunamganj', 'Sylhet']
+            };
+            function updateNeedDistricts() {
+                const division = document.getElementById('needDivision').value;
+                const districtSelect = document.getElementById('needDistrict');
+                districtSelect.innerHTML = '';
+                if (needDistrictsByDivision[division]) {
+                    needDistrictsByDivision[division].forEach(function(district) {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.text = district;
+                        districtSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.text = 'Select District';
+                    districtSelect.appendChild(option);
+                }
+            }
+        </script>
+        <!-- Tab Contents -->
+        <div id="tab-allNeed">
+            <div class="table-card">
+                <div class="table-title">All Need Blood Posts</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Receiver Name</th>
+                            <th>Blood Group</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Area</th>
+                            <th>Note</th>
+                            <th>Phone</th>
+                            <th>Live Chat</th>
+                            <th>Created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="need : ${needBloodPosts}">
+                            <td data-label="Receiver Name" th:text="${need.receiver.name}"></td>
+                            <td data-label="Blood Group" th:text="${need.bloodGroup}"></td>
+                            <td data-label="Division" th:text="${need.division}"></td>
+                            <td data-label="District" th:text="${need.district}"></td>
+                            <td data-label="Area" th:text="${need.area}"></td>
+                            <td data-label="Note" th:text="${need.note}"></td>
+                            <td data-label="Phone" th:text="${need.hidePhoneNumber} ? 'Hidden' : need.receiver.phoneNumber"></td>
+                            <td data-label="Live Chat">
+                                <div th:if="${need.hidePhoneNumber}" style="background:#ffeaea; border-radius:8px; padding:6px 0;">Live Chat (coming soon)</div>
+                                <a th:href="@{/chat}" class="donor-form-btn" style="background:#fff;color:#c0392b;border:2px solid #c0392b;width:auto;min-width:90px;font-size:0.98em;padding:7px 0;">Live Chat</a>
+                            </td>
+                            <td data-label="Created" th:text="${#temporals.format(need.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-allDonation" style="display:none;">
+            <div class="table-card">
+                <div class="table-title">All Donation Posts</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Donor Name</th>
+                            <th>Blood Group</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Area</th>
+                            <th>Note</th>
+                            <th>Phone</th>
+                            <th>Live Chat</th>
+                            <th>Created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="post : ${posts}">
+                            <td data-label="Donor Name" th:text="${post.donor.name}"></td>
+                            <td data-label="Blood Group" th:text="${post.donor.bloodGroup}"></td>
+                            <td data-label="Division" th:text="${post.division}"></td>
+                            <td data-label="District" th:text="${post.district}"></td>
+                            <td data-label="Area" th:text="${post.area}"></td>
+                            <td data-label="Note" th:text="${post.note}"></td>
+                            <td data-label="Phone" th:text="${post.hidePhoneNumber} ? 'Hidden' : post.donor.phoneNumber"></td>
+                            <td data-label="Live Chat">
+                                <div th:if="${post.hidePhoneNumber}" style="background:#ffeaea; border-radius:8px; padding:6px 0;">Live Chat (coming soon)</div>
+                            </td>
+                            <td data-label="Created" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-need" style="display:none;">
+            <div class="table-card">
+                <div class="table-title">Need Blood Posts</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Receiver Name</th>
+                            <th>Blood Group</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Area</th>
+                            <th>Note</th>
+                            <th>Phone</th>
+                            <th>Live Chat</th>
+                            <th>Created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="need : ${needBloodPosts}">
+                            <td data-label="Receiver Name" th:text="${need.receiver.name}"></td>
+                            <td data-label="Blood Group" th:text="${need.bloodGroup}"></td>
+                            <td data-label="Division" th:text="${need.division}"></td>
+                            <td data-label="District" th:text="${need.district}"></td>
+                            <td data-label="Area" th:text="${need.area}"></td>
+                            <td data-label="Note" th:text="${need.note}"></td>
+                            <td data-label="Phone" th:text="${need.hidePhoneNumber} ? 'Hidden' : need.receiver.phoneNumber"></td>
+                            <td data-label="Live Chat">
+                                <div th:if="${need.hidePhoneNumber}" style="background:#ffeaea; border-radius:8px; padding:6px 0;">Live Chat (coming soon)</div>
+                            </td>
+                            <td data-label="Created" th:text="${#temporals.format(need.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-create" style="display:none;">
+            <div class="section-header" style="color:#c0392b; font-size:1.5em; font-weight:800; text-align:center; margin-bottom:18px;">Create Need Blood Post</div>
+            <div class="donor-form-card">
+                <form th:action="@{/receiver/create-need-blood-post}" method="post" class="form-grid">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Blood Group:</label>
+                            <select name="bloodGroup" required>
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Division:</label>
+                            <select id="needDivision" name="division" onchange="updateNeedDistricts()" required>
+                                <option value="">Select Division</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chattogram">Chattogram</option>
+                                <option value="Khulna">Khulna</option>
+                                <option value="Barishal">Barishal</option>
+                                <option value="Mymensingh">Mymensingh</option>
+                                <option value="Rajshahi">Rajshahi</option>
+                                <option value="Rangpur">Rangpur</option>
+                                <option value="Sylhet">Sylhet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>District:</label>
+                            <select id="needDistrict" name="district" required>
+                                <option value="">Select District</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Area:</label>
+                            <input type="text" name="area" required/>
+                        </div>
+                        <div class="form-group">
+                            <label>Extra Note (optional):</label>
+                            <input type="text" name="note"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex:1 1 50%;max-width:50%;display:flex;align-items:center;background:#eafbe7;border-radius:8px;padding:10px 18px;">
+                            <label style="margin-bottom:0;display:flex;align-items:center;gap:0.5em;">
+                                <input type="checkbox" id="hideNeedPhoneNumber" name="hidePhoneNumber" value="true" style="width:18px;height:18px;"/>
+                                Hide Phone Number
+                            </label>
+                        </div>
+                        <div class="form-group" style="flex:1 1 50%;max-width:50%;display:flex;align-items:center;justify-content:flex-end;">
+                            <span style="background:#eafbe7;color:#27ae60;border-radius:8px;padding:10px 22px;font-weight:700;font-size:1.08em;display:inline-block;box-shadow:0 2px 8px #27ae6011;">✅ Live Chat ON</span>
+                        </div>
+                    </div>
+                    <div class="form-row" style="justify-content:center;">
+                        <button type="submit" class="donor-form-btn" style="margin:0 auto;">Submit Need Blood Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="tab-my" style="display:none;">
+            <div class="table-card">
+                <div class="table-title">My Need Blood Posts</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Blood Group</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Area</th>
+                            <th>Phone</th>
+                            <th>Note</th>
+                            <th>Created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="need : ${myNeedBloodPosts}">
+                            <td data-label="Blood Group" th:text="${need.bloodGroup}"></td>
+                            <td data-label="Division" th:text="${need.division}"></td>
+                            <td data-label="District" th:text="${need.district}"></td>
+                            <td data-label="Area" th:text="${need.area}"></td>
+                            <td data-label="Phone" th:text="${need.hidePhoneNumber} ? 'Hidden' : need.receiver.phoneNumber"></td>
+                            <td data-label="Note" th:text="${need.note}"></td>
+                            <td data-label="Created" th:text="${#temporals.format(need.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td>
+                                <a th:href="@{/chat}" class="donor-form-btn" style="background:#fff;color:#c0392b;border:2px solid #c0392b;width:auto;min-width:90px;font-size:0.98em;padding:7px 0;">Live Chat</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width:100%;display:flex;justify-content:flex-start;margin:24px 0 0 0;">
+        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+    </div>
+</body>
+</html> 

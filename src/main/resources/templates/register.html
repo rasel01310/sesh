@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Registration - Redlife</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script>
+        const districtsByDivision = {
+            'Dhaka': ['Dhaka', 'Faridpur', 'Gazipur', 'Gopalganj', 'Kishoreganj', 'Madaripur', 'Manikganj', 'Munshiganj', 'Narayanganj', 'Narsingdi', 'Rajbari', 'Shariatpur', 'Tangail'],
+            'Chattogram': ['Bandarban', 'Brahmanbaria', 'Chandpur', 'Chattogram', 'Cumilla', 'Cox’s Bazar', 'Feni', 'Khagrachari', 'Lakshmipur', 'Noakhali', 'Rangamati'],
+            'Khulna': ['Bagerhat', 'Chuadanga', 'Jashore', 'Jhenaidah', 'Khulna', 'Kushtia', 'Magura', 'Meherpur', 'Narail', 'Satkhira'],
+            'Barishal': ['Barguna', 'Barishal', 'Bhola', 'Jhalokathi', 'Patuakhali', 'Pirojpur'],
+            'Mymensingh': ['Jamalpur', 'Mymensingh', 'Netrokona', 'Sherpur'],
+            'Rajshahi': ['Bogura', 'Joypurhat', 'Naogaon', 'Natore', 'Chapainawabganj', 'Pabna', 'Rajshahi', 'Sirajganj'],
+            'Rangpur': ['Dinajpur', 'Gaibandha', 'Kurigram', 'Lalmonirhat', 'Nilphamari', 'Panchagarh', 'Rangpur', 'Thakurgaon'],
+            'Sylhet': ['Habiganj', 'Moulvibazar', 'Sunamganj', 'Sylhet']
+        };
+        function updateDistricts() {
+            const division = document.getElementById('division').value;
+            const districtSelect = document.getElementById('district');
+            districtSelect.innerHTML = '';
+            if (districtsByDivision[division]) {
+                districtsByDivision[division].forEach(function(district) {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.text = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="register-form-card">
+        <h2 class="dashboard-header" style="color:#c0392b; font-size:1.5em; font-weight:800; text-align:center; margin-bottom:18px;">User Registration</h2>
+        <div class="section-header" style="color:#c0392b; font-size:1.1em; font-weight:700; text-align:center; margin-bottom:18px;">Create Your Account</div>
+        <form th:action="@{/register}" th:object="${user}" method="post" class="form-grid">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" th:field="*{name}" required/>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number:</label>
+                    <input type="text" th:field="*{phoneNumber}" required pattern="01[0-9]{9}" title="Enter a valid Bangladeshi phone number (11 digits)"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" th:field="*{email}" required/>
+                </div>
+                <div class="form-group">
+                    <label>Blood Group:</label>
+                    <select th:field="*{bloodGroup}" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Division:</label>
+                    <select id="division" name="division" th:field="*{division}" onchange="updateDistricts()" required>
+                        <option value="">Select Division</option>
+                        <option value="Dhaka">Dhaka</option>
+                        <option value="Chattogram">Chattogram</option>
+                        <option value="Khulna">Khulna</option>
+                        <option value="Barishal">Barishal</option>
+                        <option value="Mymensingh">Mymensingh</option>
+                        <option value="Rajshahi">Rajshahi</option>
+                        <option value="Rangpur">Rangpur</option>
+                        <option value="Sylhet">Sylhet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>District:</label>
+                    <select id="district" name="district" th:field="*{district}" required>
+                        <option value="">Select District</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Role:</label>
+                    <select th:field="*{role}" required>
+                        <option value="">Select Role</option>
+                        <option value="Donor">Donor</option>
+                        <option value="Receiver">Receiver</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" th:field="*{password}" required/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Confirm Password:</label>
+                    <input type="password" name="confirmPassword" required/>
+                </div>
+            </div>
+            <div class="form-row">
+                <button type="submit" class="register-form-btn">Register</button>
+            </div>
+        </form>
+        <div th:if="${error}" class="error-message" style="margin-top:10px;">
+            <span th:text="${error}"></span>
+        </div>
+        <div style="text-align:center; margin-top:10px;">
+            <a th:href="@{/user-login}" style="color:#c0392b; font-weight:600;">Back to Login</a>
+        </div>
+    </div>
+    <script>
+        window.onload = function() { updateDistricts(); };
+    </script>
+    <style>
+        .register-form-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px #e74c3c22;
+            padding: 36px 28px 24px 28px;
+            max-width: 520px;
+            margin: 40px auto 24px auto;
+        }
+        .register-form-btn {
+            width: 100%;
+            background: #c0392b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .register-form-btn:hover { background: #e74c3c; }
+        .form-grid { display: flex; flex-direction: column; gap: 12px; }
+        .form-row { display: flex; gap: 16px; }
+        .form-group { flex: 1 1 0; display: flex; flex-direction: column; }
+        .form-group label { color: #c0392b; font-weight: 600; margin-bottom: 4px; }
+        .form-group input, .form-group select { padding: 10px; border-radius: 6px; border: 1.5px solid #f3d1d1; font-size: 1em; }
+        @media (max-width: 700px) { .form-row { flex-direction: column; gap: 0; } .register-form-card { padding: 16px 4vw; } }
+    </style>
+</body>
+</html> 

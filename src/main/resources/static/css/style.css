@@ -1,0 +1,276 @@
+/* --- Enhanced Professional UI Styles --- */
+:root {
+    --primary: #c0392b;
+    --primary-light: #e74c3c;
+    --background: #f7f7fa;
+    --background-accent: #ffeaea;
+    --card-bg: #fff;
+    --shadow: 0 8px 32px #e74c3c22;
+    --border-radius: 18px;
+    --transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--background) 60%, var(--background-accent) 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: #222;
+}
+
+nav {
+    width: 100%;
+    background: var(--background-accent);
+    padding: 16px 0 12px 0;
+    box-shadow: 0 2px 8px #e74c3c11;
+    margin-bottom: 18px;
+}
+nav a {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.13em;
+    text-decoration: none;
+    padding: 10px 26px;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+nav a:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.container, .register-form-card, .login-container, .home-container, .team-section, .table-card, .chat-placeholder {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 40px 32px 28px 32px;
+    max-width: 600px;
+    margin: 40px auto 24px auto;
+}
+
+h1, h2, .dashboard-header, .team-title {
+    color: var(--primary);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+h1 { font-size: 2.3em; margin-bottom: 10px; }
+h2, .dashboard-header { font-size: 2em; margin-bottom: 18px; }
+.team-title { font-size: 1.5em; margin-bottom: 18px; }
+
+.button, button, .tab-btn, .donor-form-btn, .logout-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 2px 8px #e74c3c11;
+}
+.button:hover, button:hover, .tab-btn:hover, .donor-form-btn:hover, .logout-btn:hover {
+    background: var(--primary-light);
+    color: #fff;
+}
+
+input, select, textarea {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #f3d1d1;
+    font-size: 1em;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    background: #fafafa;
+    transition: border 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+    border: 1.5px solid var(--primary-light);
+    outline: none;
+}
+
+label {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.table-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 24px 18px;
+    max-width: 1100px;
+    margin: 24px auto;
+}
+.table-title {
+    color: var(--primary);
+    font-size: 1.15em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: left;
+    letter-spacing: 0.5px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+}
+th, td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #f3d1d1;
+    text-align: left;
+    font-size: 1.05em;
+}
+th {
+    background: var(--background-accent);
+    color: var(--primary);
+    font-size: 1.08em;
+    font-weight: 700;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) { background: #faf6f6; }
+tr:hover { background: #fff2f2; }
+
+.tab-btn {
+    padding: 10px 22px;
+    border: none;
+    background: var(--background-accent);
+    color: var(--primary);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 4px;
+}
+.tab-btn.active-tab, .tab-btn:active {
+    background: var(--primary);
+    color: #fff;
+}
+
+.logout-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1.12em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    margin: 0 auto;
+    display: inline-block;
+}
+.logout-btn:hover { background: var(--primary-light); color: #fff; }
+
+.welcome-user {
+    background: var(--background-accent);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.13em;
+    border-radius: 8px;
+    padding: 8px 22px;
+    margin-left: 18px;
+    box-shadow: 0 2px 8px #e74c3c11;
+    letter-spacing: 0.5px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+.form-group {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+}
+.section-header {
+    color: var(--primary);
+    font-size: 1.1em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.error-message {
+    color: #fff;
+    background: var(--primary-light);
+    padding: 10px 0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+a:hover {
+    text-decoration: underline;
+    color: var(--primary-light);
+}
+
+@media (max-width: 900px) {
+    .table-card { padding: 10px 2vw; }
+    th, td { padding: 8px 4px; font-size: 0.98em; }
+}
+@media (max-width: 700px) {
+    .container, .register-form-card, .login-container, .home-container, .team-section, .table-card, .chat-placeholder {
+        padding: 16px 4vw;
+        margin: 20px 2vw;
+    }
+    .form-row { flex-direction: column; gap: 0; }
+}
+
+/* --- Desktop Layout Enhancements --- */
+@media (min-width: 1100px) {
+    .container {
+        max-width: 1200px;
+        margin: 40px auto 24px auto;
+        padding: 40px 48px 28px 48px;
+    }
+    .dashboard-header {
+        font-size: 2.4em;
+    }
+    .table-card {
+        padding: 32px 28px;
+    }
+    .form-row {
+        gap: 32px;
+    }
+}
+
+.dashboard-main {
+    padding: 32px 0;
+    background: var(--background);
+    min-height: 80vh;
+}
+
+.table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+table {
+    min-width: 900px;
+    max-width: 100%;
+}
+@media (max-width: 1100px) {
+    table { min-width: 600px; }
+}
+
+/* Visually separate tab content for desktop */
+[id^="tab-"] {
+    margin-bottom: 32px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px #e74c3c11;
+    padding: 18px 12px;
+}

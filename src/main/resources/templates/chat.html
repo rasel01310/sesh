@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Live Chat - Redlife</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        .chat-placeholder {
+            max-width: 500px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px #e74c3c22;
+            padding: 48px 32px 36px 32px;
+            text-align: center;
+        }
+        .chat-placeholder h2 { color: #c0392b; font-size: 2em; margin-bottom: 18px; font-weight: 800; }
+        .chat-placeholder p { color: #444; font-size: 1.13em; }
+    </style>
+</head>
+<body>
+    <nav style="width:100%;background:#ffeaea;padding:12px 0 10px 0;box-shadow:0 2px 8px #e74c3c11;margin-bottom:10px;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;">
+            <a th:href="@{/}" style="color:#c0392b;font-weight:700;font-size:1.13em;text-decoration:none;padding:8px 22px;border-radius:8px;transition:background 0.2s;">&larr; Back to Home</a>
+        </div>
+    </nav>
+    <div class="chat-placeholder">
+        <h2>Live Chat</h2>
+        <p>This is a placeholder for the live chat feature.<br>Chat functionality coming soon!</p>
+    </div>
+</body>
+</html> 

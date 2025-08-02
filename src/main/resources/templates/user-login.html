@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Login - Redlife</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <h2>User Login</h2>
+    <form method="post" th:action="@{/process-user-login}">
+        <label>Email:</label>
+        <input type="email" name="username" required/><br/>
+        <label>Password:</label>
+        <input type="password" name="password" required/><br/>
+        <button type="submit">Login</button>
+    </form>
+    <a th:href="@{/register}">Don't have an account? Register here</a><br/>
+    <a th:href="@{/}">Back to Home</a>
+</body>
+</html> 
